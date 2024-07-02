@@ -1,17 +1,18 @@
-import { BlogPostsList } from "@/components/BlogPostsList";
+import { FullPostsList } from "@/components/FullPostsList";
+import { Loader } from "@/components/Loader";
 import { PageMainContainer } from "@/components/PageMainContainer";
 import { PageTitle } from "@/components/PageTitle";
-import { prisma } from "@/prisma/prisma";
+import { Suspense } from "react";
+
+export const revalidate = 60;
 
 export default async function Home() {
-  const posts = await prisma.posts.findMany({
-    include: { tags_posts: true },
-    orderBy: { created_at: "desc" },
-  });
   return (
     <PageMainContainer>
       <PageTitle>Latest Posts</PageTitle>
-      <BlogPostsList posts={posts} />
+      <Suspense fallback={<Loader />}>
+        <FullPostsList />
+      </Suspense>
     </PageMainContainer>
   );
 }
