@@ -83,7 +83,7 @@ export default async function PostPage({
       <PostTags tags={tags} />
       <div className="border-b border-black border-dotted" />
       <Suspense fallback={<Loader />}>
-        <PostCommentsList postId={post.id} />
+        <PostCommentsList postId={post.id} slug={post.slug} />
       </Suspense>
     </PageMainContainer>
   );

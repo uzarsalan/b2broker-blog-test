@@ -4,7 +4,13 @@ import { revalidatePath } from "next/cache";
 import { CommentForm } from "../CommentForm";
 import { PostCommentsListClient } from "./client";
 
-export async function PostCommentsList({ postId }: { postId: string }) {
+export async function PostCommentsList({
+  postId,
+  slug,
+}: {
+  postId: string;
+  slug: string;
+}) {
   const comments = await prisma.comments.findMany({
     where: { post_id: postId },
     orderBy: { created_at: "desc" },
@@ -24,7 +30,7 @@ export async function PostCommentsList({ postId }: { postId: string }) {
         posts: { connect: { id: postId } },
       },
     });
-    revalidatePath("/");
+    revalidatePath(`/${slug}`);
     return createdComment;
   }
 
