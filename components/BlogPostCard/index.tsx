@@ -5,6 +5,10 @@ import Image from "next/image";
 import { Tag } from "../Tag";
 import Link from "next/link";
 import { PostTags } from "../PostTags";
+import { MessageIconSvg } from "@/svg/MessageIconSvg";
+import { Suspense } from "react";
+import { Loader } from "../Loader";
+import { prisma } from "@/prisma/prisma";
 
 export function BlogPostCard({
   post,
@@ -30,13 +34,25 @@ export function BlogPostCard({
         )}
       </Link>
       <div className="flex flex-col gap-4 lg:col-span-2">
-        <Link href={`/${post.slug}`}>
-          <h2 className="text-3xl font-bold">{post.title}</h2>
-        </Link>
+        <div className="flex gap-10 items-center">
+          <Link href={`/${post.slug}`}>
+            <h2 className="text-3xl font-bold">{post.title}</h2>
+          </Link>
+          <div className="flex gap-2 items-center text-gray-500">
+            <MessageIconSvg />
+            <Suspense fallback={<Loader size={6} />}>
+              <MessageCount postId={post.id} />
+            </Suspense>
+          </div>
+        </div>
         <p className="text-2xl line-clamp-5">{post.content}</p>
         <PostTags tags={tags} />
         <p className="text-gray-500 text-xl">{date}</p>
       </div>
     </article>
   );
+}
+
+async function MessageCount({ postId }: { postId: string }) {
+  return await prisma.comments.count({ where: { post_id: postId } });
 }
