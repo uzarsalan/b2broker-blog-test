@@ -12,3 +12,5 @@ Then run the server:
 ```bash
 npm start
 ```
+
+CMS deployed on the address http://81.163.27.67:8055/admin
