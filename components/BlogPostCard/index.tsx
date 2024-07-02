@@ -10,7 +10,7 @@ export function BlogPostCard({
   post,
 }: {
   post: Prisma.postsGetPayload<{
-    include: { directus_files: true; tags_posts: true };
+    include: { tags_posts: true };
   }>;
 }) {
   const tags = post.tags_posts.map(({ tags_title }) => tags_title);
@@ -18,10 +18,10 @@ export function BlogPostCard({
   return (
     <article className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 items-center">
       <Link href={`/${post.slug}`} className="relative w-full h-full">
-        {post.directus_files ? (
+        {post.thumbnail ? (
           <Image
             fill
-            src={getDirectusFileUrl(post.directus_files?.id)}
+            src={getDirectusFileUrl(post.thumbnail)}
             alt={post.title}
             className="object-contain"
           ></Image>

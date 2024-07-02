@@ -6,7 +6,7 @@ export function BlogPostsList({
 }: {
   posts:
     | Prisma.postsGetPayload<{
-        include: { directus_files: true; tags_posts: true };
+        include: { tags_posts: true };
       }>[]
     | null;
 }) {

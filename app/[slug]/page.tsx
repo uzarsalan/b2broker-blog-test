@@ -1,3 +1,4 @@
+import { PageProps } from "@/.next/types/app/[slug]/page";
 import { Loader } from "@/components/Loader";
 import { PageMainContainer } from "@/components/PageMainContainer";
 import { PageTitle } from "@/components/PageTitle";
@@ -6,9 +7,40 @@ import { PostTags } from "@/components/PostTags";
 import { prisma } from "@/prisma/prisma";
 import { ImagePlaceholder } from "@/svg/ImagePlaceholder";
 import { getDirectusFileUrl } from "@/utils/directus";
+import { getDomain } from "@/utils/getDomain";
+import { truncateText } from "@/utils/truncateText";
+import { Metadata, ResolvingMetadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+
+type Props = {
+  params: { slug: string };
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const slug = params.slug;
+  const post = await prisma.posts.findUnique({
+    where: { slug: slug },
+  });
+
+  if (!post) return notFound();
+
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    title: `My blog | ${post.title}`,
+    description: truncateText(post.content),
+    openGraph: {
+      images: post.thumbnail
+        ? [getDirectusFileUrl(post.thumbnail), ...previousImages]
+        : previousImages,
+    },
+  };
+}
 
 export default async function PostPage({
   params,
@@ -17,7 +49,7 @@ export default async function PostPage({
 }) {
   const { slug } = params;
   const post = await prisma.posts.findUnique({
-    include: { tags_posts: true, directus_files: true },
+    include: { tags_posts: true },
     where: { slug },
   });
   if (!post) {
@@ -27,10 +59,10 @@ export default async function PostPage({
   return (
     <PageMainContainer>
       <div className="relative w-full h-[400px]">
-        {post.directus_files ? (
+        {post.thumbnail ? (
           <Image
             fill
-            src={getDirectusFileUrl(post.directus_files?.id)}
+            src={getDirectusFileUrl(post.thumbnail)}
             alt={post.title}
             className="object-contain"
           ></Image>

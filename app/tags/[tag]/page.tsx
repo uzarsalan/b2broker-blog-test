@@ -5,7 +5,7 @@ import { prisma } from "@/prisma/prisma";
 
 export default async function TagPage({ params }: { params: { tag: string } }) {
   const posts = await prisma.posts.findMany({
-    include: { directus_files: true, tags_posts: true },
+    include: { tags_posts: true },
     where: { tags_posts: { some: { tags_title: params.tag } } },
     orderBy: { created_at: "desc" },
   });
