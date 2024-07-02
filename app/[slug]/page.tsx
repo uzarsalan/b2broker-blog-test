@@ -42,6 +42,14 @@ export async function generateMetadata(
   };
 }
 
+export async function generateStaticParams() {
+  const posts = await prisma.posts.findMany();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
 export default async function PostPage({
   params,
 }: {

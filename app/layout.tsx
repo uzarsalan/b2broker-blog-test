@@ -6,9 +6,7 @@ import { getDomain } from "@/utils/getDomain";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export async function generateMetadata(
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "My blog | Cool story of my life!",
     description: "Cool story of my life!",
