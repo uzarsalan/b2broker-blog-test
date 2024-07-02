@@ -1,4 +1,3 @@
-import { PageProps } from "@/.next/types/app/[slug]/page";
 import { Loader } from "@/components/Loader";
 import { PageMainContainer } from "@/components/PageMainContainer";
 import { PageTitle } from "@/components/PageTitle";
@@ -34,6 +33,7 @@ export async function generateMetadata(
   return {
     title: `My blog | ${post.title}`,
     description: truncateText(post.content),
+    metadataBase: new URL(getDomain()),
     openGraph: {
       images: post.thumbnail
         ? [getDirectusFileUrl(post.thumbnail), ...previousImages]

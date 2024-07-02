@@ -1,4 +1,4 @@
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
@@ -10,6 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: "My blog | Cool story of my life!",
     description: "Cool story of my life!",
+    metadataBase: new URL(getDomain()),
     openGraph: {
       type: "website",
       url: getDomain(),
