@@ -1,7 +1,14 @@
 ## Getting Started
 
-First, run the development server:
+First, create `.env` file with following structure
+
+```env
+DATABASE_URL="postgresql://..."
+DIRECTUS_URL="http..."
+```
+
+Then run the server:
 
 ```bash
-npm run dev
+npm start
 ```
