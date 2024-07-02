@@ -4,7 +4,7 @@ import { PageMainContainer } from "@/components/PageMainContainer";
 import { PageTitle } from "@/components/PageTitle";
 import { Suspense } from "react";
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function Home() {
   return (
