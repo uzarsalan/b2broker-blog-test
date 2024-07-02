@@ -31,6 +31,7 @@ export async function PostCommentsList({
       },
     });
     revalidatePath(`/${slug}`);
+    revalidatePath("/");
     return createdComment;
   }
 
